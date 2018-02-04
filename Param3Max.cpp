@@ -17,8 +17,27 @@ using namespace clang::ast_matchers;
 using namespace clang::tooling;
 using namespace llvm;
 
+namespace {
+class ToolTemplateCallback : public MatchFinder::MatchCallback {
+public:
+  void run(const MatchFinder::MatchResult &Result) override {
+    auto *D = Result.Nodes.getNodeAs<FunctionDecl>("func");
+    assert(D);
+  }
+};
+} // namespace
+
+static llvm::cl::OptionCategory MyToolCategory("3-params options");
 
 int main(int argc, const char **argv) {
+  CommonOptionsParser OptionsParser(argc, argv, MyToolCategory);
+  ClangTool Tool(OptionsParser.getCompilations(),
+                 OptionsParser.getSourcePathList());
 
-    return 0;
+  ast_matchers::MatchFinder Finder;
+  ToolTemplateCallback Callback;
+
+  Finder.addMatcher(functionDecl().bind("func"), &Callback);
+
+  return Tool.run(newFrontendActionFactory(&Finder).get());
 }
