@@ -23,6 +23,13 @@ public:
   void run(const MatchFinder::MatchResult &Result) override {
     auto *D = Result.Nodes.getNodeAs<FunctionDecl>("func");
     assert(D);
+    if (D->getNumParams() > 3) {
+      llvm::outs() << "More then 3 parameters on function: "
+                   << D->getNameAsString() << " on line "
+                   << D->getSourceRange().getBegin().printToString(
+                          *Result.SourceManager)
+                   << "\n";
+    }
   }
 };
 } // namespace
