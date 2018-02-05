@@ -1,6 +1,9 @@
-# Build instructions
-1. Clone project to llvm/tools/clang/tools/extra
-2. Navigate to llvm/tools/clang/tools/extra
-3. Add the line "add_subdirectory(3-params-max)" to CMakeLists.txt
-4. Navigate into the folder llvm/build
-5. Build the 3-params-max tool using your build tool of choice, eg) `ninja 3-params`
+# Using clang for analysis
+
+This is two ways to check for functions which have more then 3 parameters.
+Instructions can be found in the readmes within each folder
+# tool
+In this folder, clang's libtooling was used to find and warn about functions with more then 3 parameters
+
+# tidy-checker
+In this folder, a static analysis tool was build to be used with clang-tidy to warn you if you have messy functions with more then 3 parameters
